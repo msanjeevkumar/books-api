@@ -1,73 +1,67 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Node.js and TypeScript RESTful API Project
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+This repository contains a RESTful API project built using Node.js and TypeScript. The API is designed to manage a collection of books and includes endpoints for retrieving, adding, updating, and deleting books. The project also incorporates Swagger support, input validation using Joi, unit tests, and uses Sequelize with raw queries to interact with a MySQL database.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Table of Contents
 
-## Description
+- [Getting Started](#getting-started)
+- [API Endpoints](#api-endpoints)
+- [Validation and Error Handling](#validation-and-error-handling)
+- [Testing](#testing)
+- [Dockerization](#dockerization)
+- [Installation](#installation)
+- [Usage](#usage)
+- [License](#license)
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Getting Started
+
+To get started with this project, follow the instructions below:
+
+1. Clone this repository to your local machine.
+2. Install the required dependencies using `npm install`.
+3. Set up your MySQL database and configure the database connection in the `.env` file.
+4. Run database migrations using `npm run migrate` to set up the necessary tables.
+5. Start the application using `npm run start`.
+
+## API Endpoints
+
+The following endpoints are available in the API:
+
+- `GET /api/books`: Retrieve a list of all books.
+- `GET /api/books/:id`: Retrieve a specific book by its ID.
+- `POST /api/books`: Add a new book to the collection.
+- `PUT /api/books/:id`: Update an existing book by its ID.
+- `DELETE /api/books/:id`: Delete a book from the collection by its ID.
+
+## Validation and Error Handling
+
+Input validation is implemented for various endpoints to ensure data integrity. The API uses Joi for input validation and returns appropriate error responses for invalid input or when a book is not found.
+
+## Testing
+
+The project includes a comprehensive suite of unit tests to ensure the correctness of the API endpoints and their functionality. To run the tests, use the command `npm run test`.
+
+## Dockerization
+
+This project is containerized using Docker. A Dockerfile is included in the repository to build the Docker image. To build and run the Docker container, follow these steps:
+
+1. Build the Docker image: `docker build -t node-api .`
+2. Run the Docker container: `docker run -p 3000:3000 node-api`
 
 ## Installation
 
-```bash
-$ npm install
-```
+1. Clone the repository: `git clone https://github.com/msanjeevkumar/books-api.git`
+2. Install dependencies: `npm install`
 
-## Running the app
+## Usage
 
-```bash
-# development
-$ npm run start
+1. Configure the database connection in `.env`.
+2. Run database migrations: `npm run migrate`
+3. Start the application: `npm run start`
 
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
-```
-
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
 
 ## License
 
-Nest is [MIT licensed](LICENSE).
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+Feel free to reach out if you have any questions or need further clarification. Good luck with your portfolio!
