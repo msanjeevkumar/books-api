@@ -3,6 +3,7 @@ import { BooksModule } from './books/books.module';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MigrationService } from './migrate.service';
+import { AppService } from './app.service';
 
 @Module({
   imports: [
@@ -26,6 +27,6 @@ import { MigrationService } from './migrate.service';
     }),
   ],
   controllers: [],
-  providers: [MigrationService],
+  providers: [MigrationService, AppService],
 })
 export class AppModule {}

@@ -8,12 +8,13 @@ services:
       MYSQL_DATABASE: books_db
       MYSQL_USER: books_user
       MYSQL_PASSWORD: Books123
+    ports:
+        - '3306:3306'
+        - '33060:33060'
     volumes:
       - ./db-temp:/var/lib/mysql
-    networks:
-      - books_network
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "books_user", "-pBooks#123"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "books_user", "-pBooks123"]
       interval: 5s
       timeout: 20s
       retries: 10
@@ -30,12 +31,7 @@ services:
 #    environment:
 #      - DB_HOST=books_mysql
 #      - DB_PORT=3306
-#      - DB_USERNAME=books_user
-#      - DB_PASSWORD="Books123"
+#      - DB_USERNAME=root
+#      - DB_PASSWORD="toor"
 #      - DB_NAME=books_db
 #      - RUN_MIGRATIONS=true
-#    networks:
-#      - books_network
-#
-#networks:
-#  books_network:
