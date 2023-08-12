@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BooksService create should create a book and return it 1`] = `
+{
+  "author": "Test Author",
+  "id": "generated-id",
+  "publishedYear": 2023,
+  "title": "Test Book",
+}
+`;

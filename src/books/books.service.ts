@@ -1,27 +1,19 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { uuid } from 'uuidv4';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
 import { Sequelize } from 'sequelize-typescript';
 import { QueryTypes } from 'sequelize';
 import { Book } from './entities/book.entity';
+import { SqlQuery } from './sql-query.enum';
 
 @Injectable()
 export class BooksService {
   constructor(private readonly sequelize: Sequelize) {}
 
   async create(createBookDto: CreateBookDto) {
-    const insertQuery = `
-        INSERT INTO books_db.books (id, title, author, publishedYear)
-        VALUES (:id, :title, :author, :publishedYear);
-    `;
-
     const book = { id: uuid(), ...createBookDto };
-    await this.sequelize.query(insertQuery, {
+    await this.sequelize.query(SqlQuery.InsertBook, {
       type: QueryTypes.INSERT,
       replacements: {
         ...book,
@@ -32,15 +24,13 @@ export class BooksService {
   }
 
   async findAll(): Promise<Book[]> {
-    const selectAllQuery = `SELECT * FROM books_db.books`;
-    return this.sequelize.query(selectAllQuery, {
+    return this.sequelize.query(SqlQuery.SelectAllBooks, {
       type: QueryTypes.SELECT,
     });
   }
 
   async findOne(id: string): Promise<Book> {
-    const selectOneQuery = `SELECT * FROM books_db.books WHERE id = :id`;
-    const book: Book = await this.sequelize.query(selectOneQuery, {
+    const book: Book = await this.sequelize.query(SqlQuery.SelectBookById, {
       type: QueryTypes.SELECT,
       replacements: { id },
       plain: true,
@@ -77,12 +67,8 @@ export class BooksService {
       return; // No updates needed
     }
 
-    const updateQuery = `
-      UPDATE books_db.books
-      SET
-        ${updateFields.join(', ')}
-      WHERE id = :id
-    `;
+    const fields = updateFields.join(', ');
+    const updateQuery = SqlQuery.UpdateBook.replace('{fields}', fields);
 
     const replacements = { id, ...updateBookDto };
 
@@ -93,8 +79,7 @@ export class BooksService {
   }
 
   async remove(id: string): Promise<void> {
-    const deleteQuery = `DELETE FROM books_db.books WHERE id = :id`;
-    const [, meta] = (await this.sequelize.query(deleteQuery, {
+    const [, meta] = (await this.sequelize.query(SqlQuery.DeleteBook, {
       type: QueryTypes.RAW,
       replacements: { id },
     })) as [any, { affectedRows: number }];
