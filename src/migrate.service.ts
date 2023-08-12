@@ -75,39 +75,31 @@ export class MigrationService {
   async up(): Promise<void> {
     const umzug = await this.init();
 
-    try {
-      const pendingMigrations = await umzug.pending();
-      if (pendingMigrations.length === 0) {
-        this.logger.log('No pending migrations.');
-        return;
-      }
-
-      const migrations = await umzug.up();
-      this.logger.log(
-        'Migrations successfully applied:',
-        JSON.stringify(migrations),
-      );
-    } catch (error) {
-      this.logger.error('Error applying migrations:', error);
+    const pendingMigrations = await umzug.pending();
+    if (pendingMigrations.length === 0) {
+      this.logger.log('No pending migrations.');
+      return;
     }
+
+    const migrations = await umzug.up();
+    this.logger.log(
+      'Migrations successfully applied:',
+      JSON.stringify(migrations),
+    );
   }
 
   async down(): Promise<void> {
     const umzug = await this.init();
 
-    try {
-      const executedMigrations = await umzug.executed();
-      if (executedMigrations.length <= 0) {
-        this.logger.log('No executed migrations.');
-        return;
-      }
-
-      await umzug.down({
-        to: executedMigrations[executedMigrations.length - 1].name,
-      }); // Revert the last executed migration
-      this.logger.log('Last migration reverted successfully.');
-    } catch (error) {
-      this.logger.error('Error reverting migration:', error);
+    const executedMigrations = await umzug.executed();
+    if (executedMigrations.length <= 0) {
+      this.logger.log('No executed migrations.');
+      return;
     }
+
+    await umzug.down({
+      to: executedMigrations[executedMigrations.length - 1].name,
+    }); // Revert the last executed migration
+    this.logger.log('Last migration reverted successfully.');
   }
 }
