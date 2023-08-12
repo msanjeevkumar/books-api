@@ -7,11 +7,13 @@ import {
   Param,
   Delete,
   HttpCode,
+  UsePipes,
 } from '@nestjs/common';
 import { BooksService } from './books.service';
-import { CreateBookDto } from './dto/create-book.dto';
-import { UpdateBookDto } from './dto/update-book.dto';
+import { CreateBookDto, createBookSchema } from './dto/create-book.dto';
+import { UpdateBookDto, updateBookDtoSchema } from './dto/update-book.dto';
 import {
+  ApiBadRequestResponse,
   ApiCreatedResponse,
   ApiNoContentResponse,
   ApiNotFoundResponse,
@@ -20,6 +22,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { Book } from './entities/book.entity';
+import { JoiValidationPipe } from '../joi.validation.pipe';
 
 @Controller('api/books')
 @ApiTags('books')
@@ -28,7 +31,19 @@ export class BooksController {
 
   @Post()
   @ApiCreatedResponse({ description: 'Book created successfully' })
-  async create(@Body() createBookDto: CreateBookDto) {
+  @ApiBadRequestResponse({
+    description: 'Validation failed',
+    schema: {
+      example: {
+        message: '"title" is required',
+        error: 'Bad Request',
+        statusCode: 400,
+      },
+    },
+  })
+  async create(
+    @Body(new JoiValidationPipe(createBookSchema)) createBookDto: CreateBookDto,
+  ) {
     return this.booksService.create(createBookDto);
   }
 
@@ -62,6 +77,17 @@ export class BooksController {
 
   @Patch(':id')
   @HttpCode(204)
+  @ApiBadRequestResponse({
+    description: 'Validation failed',
+    schema: {
+      example: {
+        statusCode: 400,
+        message:
+          '"value" must contain at least one of [title, author, publishedYear]',
+        error: 'Bad Request',
+      },
+    },
+  })
   @ApiNoContentResponse({ description: 'Book updated successfully' })
   @ApiNotFoundResponse({
     description: 'Book not found',
@@ -73,7 +99,11 @@ export class BooksController {
       },
     },
   })
-  async update(@Param('id') id: string, @Body() updateBookDto: UpdateBookDto) {
+  async update(
+    @Param('id') id: string,
+    @Body(new JoiValidationPipe(updateBookDtoSchema))
+    updateBookDto: UpdateBookDto,
+  ) {
     return this.booksService.update(id, updateBookDto);
   }
 

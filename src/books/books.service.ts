@@ -54,10 +54,6 @@ export class BooksService {
   }
 
   async update(id: string, updateBookDto: UpdateBookDto): Promise<void> {
-    if (Object.keys(updateBookDto).length === 0) {
-      throw new BadRequestException('At least one field is needed to update');
-    }
-
     const existingBook = await this.findOne(id);
 
     const fieldMappings = [
